@@ -22,7 +22,7 @@ public class Beam : MonoBehaviour
 
         public void Update()
         {
-            Debug.Log(beam.GetComponent<Rigidbody>().velocity);
+            //Debug.Log(beam.GetComponent<Rigidbody>().velocity);
             life -= Time.deltaTime;
         }
 

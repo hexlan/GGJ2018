@@ -49,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
         var horizontal = Input.GetAxisRaw("Horizontal_P" + player);
         var vertical = Input.GetAxisRaw("Vertical_P" + player);
 
-        Debug.Log("P" + player +": " + horizontal + ", " + vertical);
+        //Debug.Log("P" + player +": " + horizontal + ", " + vertical);
 
         var joystickAngle = Mathf.Rad2Deg * (Mathf.Atan2(vertical, horizontal));
         if (joystickAngle < 0)
