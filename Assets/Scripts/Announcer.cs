@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Announcer : MonoBehaviour
 {
@@ -25,6 +26,12 @@ public class Announcer : MonoBehaviour
     public AudioClip redLoss1;
     public AudioClip greenLoss1;
     public AudioClip yellowLoss1;
+
+    public AudioClip Tie1;
+    public AudioClip Tie2;
+    public AudioClip Tie3;
+    public AudioClip Tie4;
+    public AudioClip Tie5;
 
     public HUD redHUD;
     public HUD blueHUD;
@@ -51,7 +58,7 @@ public class Announcer : MonoBehaviour
         fadeOut
     }
 
-    private float timer = 30;
+    private float timer = 180;
     public Text time;
     State currentState = State.fadeIn;
 
@@ -107,6 +114,9 @@ public class Announcer : MonoBehaviour
                 if (!audio.isPlaying)
                 {
                     pause = false;
+                    var jukebox = GameObject.FindGameObjectWithTag("Jukebox");
+                    jukebox.GetComponent<AudioSource>().clip = jukebox.GetComponent<MenuScreenMusic>().gameMusic;
+                    jukebox.GetComponent<AudioSource>().Play();
                     currentState = State.play;
                 }
                 break;
@@ -158,14 +168,20 @@ public class Announcer : MonoBehaviour
                 if (timer < 0) timer = 0;
                 if (!audio.isPlaying)
                 {
+                    GameObject.FindGameObjectWithTag("Jukebox").GetComponent<AudioSource>().Stop();
+                    pause = true;
                     if (greenHUD.score > blueHUD.score && greenHUD.score > redHUD.score && greenHUD.score > yellowHUD.score)
                     {
+                        greenHUD.gameObject.transform.position = new Vector3(51, 476.9f, -159);
+                        greenHUD.gameObject.transform.rotation = Quaternion.Euler(new Vector3(225, -90, -90));
                         // Play Green Win
                         audio.PlayOneShot(greenVictory1);
                         currentState = State.loser;
                     }
                     else if (blueHUD.score > greenHUD.score && blueHUD.score > redHUD.score && blueHUD.score > yellowHUD.score)
                     {
+                        blueHUD.gameObject.transform.position = new Vector3(51, 476.9f, -159);
+                        blueHUD.gameObject.transform.rotation = Quaternion.Euler(new Vector3(225, -90, -90));
                         // Play Blue Win
                         var rng = Random.value * 3;
                         if (rng == 0)
@@ -184,18 +200,44 @@ public class Announcer : MonoBehaviour
                     }
                     else if (redHUD.score > greenHUD.score && redHUD.score > blueHUD.score && redHUD.score > yellowHUD.score)
                     {
+                        redHUD.gameObject.transform.position = new Vector3(51, 476.9f, -159);
+                        redHUD.gameObject.transform.rotation = Quaternion.Euler(new Vector3(225, -90, -90));
                         // Play Red Win
                         audio.PlayOneShot(redVictory1);
                         currentState = State.loser;
                     }
                     else if (yellowHUD.score > greenHUD.score && yellowHUD.score > blueHUD.score && yellowHUD.score > redHUD.score)
                     {
+                        yellowHUD.gameObject.transform.position = new Vector3(51, 476.9f, -159);
+                        yellowHUD.gameObject.transform.rotation = Quaternion.Euler(new Vector3(225, -90, -90));
                         // Play Yellow Win
                         audio.PlayOneShot(yellowVictory1);
                         currentState = State.loser;
                     }
                     else
                     {
+                        var rng = Random.value * 5;
+                        if (rng == 0)
+                        {
+                            audio.PlayOneShot(Tie1);
+                        }
+                        else if (rng == 1)
+                        {
+                            audio.PlayOneShot(Tie2);
+                        }
+                        else if (rng == 2)
+                        {
+                            audio.PlayOneShot(Tie3);
+                        }
+                        else if (rng == 3)
+                        {
+                            audio.PlayOneShot(Tie4);
+                        }
+                        else
+                        {
+                            audio.PlayOneShot(Tie5);
+                        }
+
                         currentState = State.fadeOut;
                     }
                 }
@@ -203,8 +245,6 @@ public class Announcer : MonoBehaviour
             case State.loser:
                 if (!audio.isPlaying)
                 {
-
-
                     if (greenHUD.score <= blueHUD.score && greenHUD.score <= redHUD.score && greenHUD.score <= yellowHUD.score)
                     {
                         // Play Green Lost
@@ -239,7 +279,12 @@ public class Announcer : MonoBehaviour
             case State.fadeOut:
                 if (!audio.isPlaying)
                 {
-
+                    var jukebox = GameObject.FindGameObjectWithTag("Jukebox");
+                    jukebox.GetComponent<AudioSource>().clip = jukebox.GetComponent<MenuScreenMusic>().menuMusic;
+                    jukebox.GetComponent<AudioSource>().Play();
+                    currentState = State.play;
+                    Select.ready = 0;
+                    SceneManager.LoadScene(0);
                 }
                 break;
         }

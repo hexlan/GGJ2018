@@ -21,7 +21,7 @@ public class HUD : MonoBehaviour {
 	
 	void Update ()
     {
-        livesUI.text = "Lives: " + lives;
+        livesUI.text = "Health: " + lives;
         scoreUI.text = "Score: " + score;
 
         var playerMovement = GetComponent<PlayerMovement>();
