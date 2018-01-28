@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     public float acceleration;
     public float turnRate;
     public float maxSpeed;
+    public string player;
 
     private MovementState movementState = MovementState.Stopped;
     private Rigidbody rigidBody;
@@ -45,8 +46,10 @@ public class PlayerMovement : MonoBehaviour
         var rigidBody = GetComponent<Rigidbody>();
         rigidBody.velocity = new Vector3(rigidBody.velocity.magnitude, 0.0f, 0.0f);
 
-        var horizontal = Input.GetAxisRaw("Horizontal");
-        var vertical = Input.GetAxisRaw("Vertical");
+        var horizontal = Input.GetAxisRaw("Horizontal_P" + player);
+        var vertical = Input.GetAxisRaw("Vertical_P" + player);
+
+        Debug.Log("P" + player +": " + horizontal + ", " + vertical);
 
         var joystickAngle = Mathf.Rad2Deg * (Mathf.Atan2(vertical, horizontal));
         if (joystickAngle < 0)

@@ -1,27 +1,15 @@
 fileFormatVersion: 2
-guid: b1fa6cc218ef5ea4699df292d27c4c21
-timeCreated: 1517070873
+guid: ccd95f66c214a934583b652509f3b9b6
+timeCreated: 1517094545
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: backWheels
-    100002: frame
-    100004: frontWheels
-    100006: //RootNode
-    400000: backWheels
-    400002: frame
-    400004: frontWheels
-    400006: //RootNode
-    2300000: backWheels
-    2300002: frame
-    2300004: frontWheels
-    3300000: backWheels
-    3300002: frame
-    3300004: frontWheels
-    4300000: backWheels
-    4300002: frontWheels
-    4300004: frame
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Van
   materials:
     importMaterials: 1
     materialName: 0

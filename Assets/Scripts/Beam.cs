@@ -7,6 +7,7 @@ public class Beam : MonoBehaviour
     public class LightBeam
     {
         GameObject beam;
+        
         public float life;
         public float beamSpeed;
 
@@ -35,6 +36,7 @@ public class Beam : MonoBehaviour
     public float beamSpeed = 20.0f;
     public float beamLife = 1.5f;
     public float fireDelay = 1.5f;
+    public string player;
 
     private List<LightBeam> beams;
 
@@ -52,7 +54,7 @@ public class Beam : MonoBehaviour
             nextFire -= Time.deltaTime;
         }
 
-        if(Input.GetButtonDown("Fire1") && nextFire <= 0)
+        if(Input.GetButtonDown("Fire_P"+player) && nextFire <= 0)
         {
             nextFire = fireDelay;
             var quaternion = Quaternion.Euler(new Vector3(0.0f, transform.rotation.eulerAngles.y - 90, 0.0f));

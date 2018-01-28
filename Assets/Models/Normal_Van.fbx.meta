@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 8366d398cbc67a04c9c35615d88df11f
-timeCreated: 1517030028
+guid: 166e3a9a69630cf46ab00f4c4c5b8275
+timeCreated: 1517094545
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -9,7 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Cube
+    4300000: Van
   materials:
     importMaterials: 1
     materialName: 0
