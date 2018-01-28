@@ -58,7 +58,7 @@ public class Beam : MonoBehaviour
         {
             nextFire = fireDelay;
             var quaternion = Quaternion.Euler(new Vector3(0.0f, transform.rotation.eulerAngles.y - 90, 0.0f));
-            var beam = Instantiate(beamSource, transform.position + quaternion * new Vector3(25.0f, 0.0f, 0.0f), quaternion);
+            var beam = Instantiate(beamSource, transform.position + Vector3.up * 7.75f + quaternion * new Vector3(25.0f, 0.0f, 0.0f), quaternion);
             beams.Add(new LightBeam(beam, beamLife, beamSpeed));
         }
 
