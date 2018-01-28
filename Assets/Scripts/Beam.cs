@@ -54,7 +54,8 @@ public class Beam : MonoBehaviour
             nextFire -= Time.deltaTime;
         }
 
-        if(Input.GetButtonDown("Fire_P"+player) && nextFire <= 0)
+        var playerMovement = GetComponent<PlayerMovement>();
+        if(Input.GetButtonDown("Fire_P"+player) && nextFire <= 0 && !playerMovement.isDamaged && !playerMovement.isInvulnerable)
         {
             nextFire = fireDelay;
             var quaternion = Quaternion.Euler(new Vector3(0.0f, transform.rotation.eulerAngles.y - 90, 0.0f));
