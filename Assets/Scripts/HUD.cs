@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class HUD : MonoBehaviour {
 
@@ -12,11 +13,17 @@ public class HUD : MonoBehaviour {
     public bool load = false;
     public float loadTime = 2.5f;
 
+    public Text livesUI;
+    public Text scoreUI;
+
     private bool inZone = false;
     private Collider currentZone = null;
 	
 	void Update ()
     {
+        livesUI.text = "Lives: " + lives;
+        scoreUI.text = "Score: " + score;
+
         var playerMovement = GetComponent<PlayerMovement>();
         if(inZone && !playerMovement.isDamaged && !playerMovement.isInvulnerable)
         {
@@ -45,8 +52,8 @@ public class HUD : MonoBehaviour {
                 if (loadTime <= 0)
                 {
                     loadTime = 2.5f;
-                    currentZone.GetComponent<ZoneParent>().parentPlayer.GetComponent<HUD>().score -= 2;
-                    carrying += 2;
+                    currentZone.GetComponent<ZoneParent>().parentPlayer.GetComponent<HUD>().score -= 1;
+                    carrying += 1;
                 }
             }
             else
@@ -64,7 +71,6 @@ public class HUD : MonoBehaviour {
     {
         if(other.tag == "Zone")
         {
-            Debug.Log("ENTER ZONE");
             inZone = true;
             currentZone = other;
         }
@@ -74,9 +80,9 @@ public class HUD : MonoBehaviour {
     {
         if (other.tag == "Zone")
         {
-            Debug.Log("EXIT ZONE");
             inZone = false;
             currentZone = null;
+            loadTime = 2.5f;
         }
     }
 }

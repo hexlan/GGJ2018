@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class DataSpawner : MonoBehaviour
 {
-
     public GameObject dataSource;
     public GameObject[] data;
     public Vector3[] spawnLocations;
+    private GameObject announcer;
 
     private void Start()
     {
+        announcer = GameObject.FindGameObjectWithTag("Announcer");
+
         data = new GameObject[]{
             null,
             null,
@@ -42,19 +44,22 @@ public class DataSpawner : MonoBehaviour
 
     void Update()
     {
-        if (ContainsNull())
+        if (!announcer.GetComponent<Announcer>().pause)
         {
-            var value = Random.value * 1000;
-            if (value > 993)
+
+            if (ContainsNull())
             {
-                var index = (int)(Random.value * data.Length);
-                while (data[index] != null)
+                var value = Random.value * 1000;
+                if (value > 993)
                 {
-                    index = (int)(Random.value * data.Length);
+                    var index = (int)(Random.value * data.Length);
+                    while (data[index] != null)
+                    {
+                        index = (int)(Random.value * data.Length);
+                    }
+                    data[index] = Instantiate(dataSource, spawnLocations[index], dataSource.transform.rotation);
                 }
-                data[index] = Instantiate(dataSource, spawnLocations[index], dataSource.transform.rotation);
             }
         }
-
     }
 }

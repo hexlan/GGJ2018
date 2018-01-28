@@ -7,9 +7,11 @@ public class Beam : MonoBehaviour
     public class LightBeam
     {
         GameObject beam;
-        
+
         public float life;
         public float beamSpeed;
+
+
 
         public LightBeam(GameObject beam, float beamLife, float beamSpeed)
         {
@@ -31,7 +33,7 @@ public class Beam : MonoBehaviour
             Destroy(beam);
         }
     }
-
+    private GameObject announcer;
     public GameObject beamSource;
     public float beamSpeed = 20.0f;
     public float beamLife = 1.5f;
@@ -44,33 +46,37 @@ public class Beam : MonoBehaviour
 
     void Start()
     {
+        announcer = GameObject.FindGameObjectWithTag("Announcer");
         beams = new List<LightBeam>();
     }
 
     void Update()
     {
-        if(nextFire > 0)
+        if (!announcer.GetComponent<Announcer>().pause)
         {
-            nextFire -= Time.deltaTime;
-        }
-
-        var playerMovement = GetComponent<PlayerMovement>();
-        if(Input.GetButtonDown("Fire_P"+player) && nextFire <= 0 && !playerMovement.isDamaged && !playerMovement.isInvulnerable)
-        {
-            nextFire = fireDelay;
-            var quaternion = Quaternion.Euler(new Vector3(0.0f, transform.rotation.eulerAngles.y - 90, 0.0f));
-            var beam = Instantiate(beamSource, transform.position + Vector3.up * 7.75f + quaternion * new Vector3(25.0f, 0.0f, 0.0f), quaternion);
-            beams.Add(new LightBeam(beam, beamLife, beamSpeed));
-        }
-
-        for(var i = 0; i < beams.Count; i++)
-        {
-            beams[i].Update();
-            if(beams[i].life <= 0)
+            if (nextFire > 0)
             {
-                beams[i].Kill();
-                beams.RemoveAt(i);
-                i--;
+                nextFire -= Time.deltaTime;
+            }
+
+            var playerMovement = GetComponent<PlayerMovement>();
+            if (Input.GetButtonDown("Fire_P" + player) && nextFire <= 0 && !playerMovement.isDamaged && !playerMovement.isInvulnerable)
+            {
+                nextFire = fireDelay;
+                var quaternion = Quaternion.Euler(new Vector3(0.0f, transform.rotation.eulerAngles.y - 90, 0.0f));
+                var beam = Instantiate(beamSource, transform.position + Vector3.up * 7.75f + quaternion * new Vector3(25.0f, 0.0f, 0.0f), quaternion);
+                beams.Add(new LightBeam(beam, beamLife, beamSpeed));
+            }
+
+            for (var i = 0; i < beams.Count; i++)
+            {
+                beams[i].Update();
+                if (beams[i].life <= 0)
+                {
+                    beams[i].Kill();
+                    beams.RemoveAt(i);
+                    i--;
+                }
             }
         }
     }

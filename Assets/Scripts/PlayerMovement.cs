@@ -29,6 +29,8 @@ public class PlayerMovement : MonoBehaviour
     private MovementState movementState = MovementState.Stopped;
     private Rigidbody rigidBody;
 
+    private GameObject announcer;
+
     private void MoveForward(float angleDiffAbs, float angleDiff)
     {
         rigidBody.velocity += new Vector3(acceleration, 0.0f, 0.0f);
@@ -48,6 +50,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        announcer = GameObject.FindGameObjectWithTag("Announcer");
         rigidBody = GetComponent<Rigidbody>();
     }
 
@@ -73,79 +76,82 @@ public class PlayerMovement : MonoBehaviour
         var angleDiffAbs = Mathf.Abs(joystickAngle - currentRotation);
         var angleDiff = joystickAngle - currentRotation;
 
-        if(isInvulnerable)
+        if (!announcer.GetComponent<Announcer>().pause)
         {
-            var renderer = transform.Find("Model").GetComponent<MeshRenderer>();
-
-            if(invulTime < flicker)
+            if (isInvulnerable)
             {
-                renderer.enabled = !renderer.enabled;
-                flicker -= 0.15f;
-            }
+                var renderer = transform.Find("Model").GetComponent<MeshRenderer>();
 
-            invulTime -= Time.deltaTime;
-            if(invulTime < 0)
-            {
-                invulTime = 2.0f;
-                isInvulnerable = false;
-                renderer.enabled = true;
-                flicker = 1.8f;
-            }
-        }
-
-        if(isRespawning)
-        {
-            respawnTime -= Time.deltaTime;
-            if(respawnTime < 0)
-            {
-                respawnTime = 3;
-                isRespawning = false;
-                isInvulnerable = true;
-                transform.position = GetComponent<HUD>().respawnPosition;
-            }
-        }
-        else if (isDamaged)
-        {
-            transform.Rotate(Vector3.up * damageSpin);
-            damageTime -= Time.deltaTime;
-            if (damageTime < 0)
-            {
-                isDamaged = false;
-                damageTime = 1;
-                transform.rotation = initialAngle;
-
-                var hud = GetComponent<HUD>();
-                if(hud.lives == 0)
+                if (invulTime < flicker)
                 {
-                    hud.carrying = 0;
-                    hud.lives = 3;
-                    isRespawning = true;
-                    transform.position = new Vector3(1000, 0, 0);
-                    transform.rotation = Quaternion.Euler(hud.respawnRotation);
+                    renderer.enabled = !renderer.enabled;
+                    flicker -= 0.15f;
+                }
+
+                invulTime -= Time.deltaTime;
+                if (invulTime < 0)
+                {
+                    invulTime = 2.0f;
+                    isInvulnerable = false;
+                    renderer.enabled = true;
+                    flicker = 1.8f;
+                }
+            }
+
+            if (isRespawning)
+            {
+                respawnTime -= Time.deltaTime;
+                if (respawnTime < 0)
+                {
+                    respawnTime = 3;
+                    isRespawning = false;
+                    isInvulnerable = true;
+                    transform.position = GetComponent<HUD>().respawnPosition;
+                }
+            }
+            else if (isDamaged)
+            {
+                transform.Rotate(Vector3.up * damageSpin);
+                damageTime -= Time.deltaTime;
+                if (damageTime < 0)
+                {
+                    isDamaged = false;
+                    damageTime = 1;
+                    transform.rotation = initialAngle;
+
+                    var hud = GetComponent<HUD>();
+                    if (hud.lives == 0)
+                    {
+                        hud.carrying = 0;
+                        hud.lives = 3;
+                        isRespawning = true;
+                        transform.position = new Vector3(1000, 0, 0);
+                        transform.rotation = Quaternion.Euler(hud.respawnRotation);
+                    }
+                    else
+                    {
+                        isInvulnerable = true;
+                    }
+                }
+            }
+            else if (Mathf.Abs(horizontal) > 0.05f || Mathf.Abs(vertical) > 0.05f)
+            {
+                if (movementState == MovementState.Forward)
+                {
+                    MoveForward(angleDiffAbs, angleDiff);
                 }
                 else
                 {
-                    isInvulnerable = true;
+                    movementState = MovementState.Forward;
+                    MoveForward(angleDiffAbs, angleDiff);
                 }
-            }
-        }
-        else if (Mathf.Abs(horizontal) > 0.05f || Mathf.Abs(vertical) > 0.05f)
-        {
-            if (movementState == MovementState.Forward)
-            {
-                MoveForward(angleDiffAbs, angleDiff);
             }
             else
             {
-                movementState = MovementState.Forward;
-                MoveForward(angleDiffAbs, angleDiff);
-            }
-        }
-        else
-        {
-            if (rigidBody.velocity.magnitude > 0.05f)
-            {
-                rigidBody.velocity -= rigidBody.velocity.normalized * 15;
+                if (rigidBody.velocity.magnitude > 0.05f)
+                {
+                    rigidBody.velocity -= rigidBody.velocity.normalized * 15;
+                }
             }
         }
 

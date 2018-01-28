@@ -21,6 +21,7 @@ public class Collectible : MonoBehaviour
         height += velocity;
 
         transform.position += new Vector3(0.0f, height, 0.0f);
+        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, 18, 25), transform.position.z);
     }
 
     private void OnTriggerEnter(Collider other)
