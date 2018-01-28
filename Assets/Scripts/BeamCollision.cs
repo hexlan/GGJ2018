@@ -4,7 +4,6 @@ public class BeamCollision : MonoBehaviour
 {
     void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(collision.gameObject.tag);
         var playerMovement = collision.gameObject.GetComponent<PlayerMovement>();
         if (collision.gameObject.tag == "Player")
         {

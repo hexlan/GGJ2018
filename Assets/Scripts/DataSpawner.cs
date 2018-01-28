@@ -45,7 +45,7 @@ public class DataSpawner : MonoBehaviour
         if (ContainsNull())
         {
             var value = Random.value * 1000;
-            if (value > 992)
+            if (value > 993)
             {
                 var index = (int)(Random.value * data.Length);
                 while (data[index] != null)
